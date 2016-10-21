@@ -1,8 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package kata3;
+/*public void increment(T key){
+        map.put(key, map.containsKey(key)? map.get(key)+1 : 1);
+    }*/
 
 import java.awt.Dimension;
 import javax.swing.JPanel;
@@ -18,9 +17,14 @@ import org.jfree.ui.ApplicationFrame;
  * @author usuario
  */
 public class HistogramDisplay extends ApplicationFrame{
-    public HistogramDisplay(){
+    
+    private final Histogram<String> histogram;
+    
+    public HistogramDisplay(Histogram<String> histogram){
         super("Histograma");
+        this.histogram = histogram;
         setContentPane(createPanel());
+        setLocation(600, 400);
         pack();
     }
     public void execute() {
@@ -35,8 +39,8 @@ public class HistogramDisplay extends ApplicationFrame{
     
     private JFreeChart createChart(DefaultCategoryDataset dataSet){
         JFreeChart chart = ChartFactory.createBarChart("JFreeChart Histogram", 
-                "Domonios email", "Nº de emails", dataSet, 
-                PlotOrientation.VERTICAL, false, 
+                "Domonio de email", "Nº de emails", dataSet, 
+                PlotOrientation.VERTICAL, true, 
                 rootPaneCheckingEnabled, 
                 rootPaneCheckingEnabled);
         return chart;
@@ -45,10 +49,9 @@ public class HistogramDisplay extends ApplicationFrame{
     
     private DefaultCategoryDataset createDataset(){
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
-        dataSet.addValue(5, "", "gmail.com");
-        dataSet.addValue(10, "", "ulpgc.es");
-        dataSet.addValue(8, "", "ull.es");
-        dataSet.addValue(2, "", "hotmail.com");
+        for (String key : histogram.keySet()) {
+            dataSet.addValue(histogram.get(key), key, key);
+        }
         return dataSet;
     }
 }
